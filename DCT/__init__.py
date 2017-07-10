@@ -96,7 +96,6 @@ class DCT:
                 decoded_list.append(int(round(c, 0)))
             else:
                 decoded_list.append(c)
-
         return decoded_list
 
     def decodeDct3(self, integers_output = True):
