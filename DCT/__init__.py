@@ -7,6 +7,9 @@ import math
 
 # 1D
 class DCT:
+    quantization = [16, 11, 10, 24, 40, 51, 61, 12, 12, 14, 19, 26, 58, 60, 55, 14, 13, 16, 24, 40, 57, 69, 56,
+                    14, 17, 22, 29, 51, 87, 80, 62, 18, 22, 37, 56, 68, 109, 103, 77, 24, 35, 55, 64, 81, 104, 113, 92,
+                    49, 64, 78, 87, 103, 121, 120, 101, 72, 92, 95, 98, 112, 100, 103, 99]
     def __init__(self, data = ""):
         self.data = data
 
@@ -144,7 +147,15 @@ class DCT:
 
     def encode(self):
         return self.encodeDct2()
+    def quantize(self, encode):
+        N = len(encode)
+        for index in xrange(0, N):
+            encode[index] = math.floor(encode[index] / self.quantization[index])
 
+    def deQuantize(self, encode):
+        N = len(encode)
+        for index in xrange(0, N):
+            encode[index] = math.floor(encode[index] * self.quantization[index])
     def decode(self):
         return self.decodeDct2()
 
@@ -159,8 +170,10 @@ def demo(expand):
     t1 = time.time()
     dct = DCT(d)
     encode = dct.encodeDct2(False)
+    dct.quantize(encode)
     print encode
 
+    dct.deQuantize(encode)
     t2 = time.time()
     dct = DCT(encode)
     print dct.decodeDct2()
